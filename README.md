@@ -17,8 +17,13 @@ cd ergopay-payment-portal
 ./scripts/run.sh
 ```
 
-Open <http://localhost:8080> in your browser to access the dashboard, create payment requests, and
-monitor their status. The REST API continues to be available under `/payment/...`.
+The application listens on port `82` by default. Because low ports require elevated privileges on
+Linux and macOS, either run the command with `sudo` or override the port with
+`SERVER_PORT=<preferred-port> ./scripts/run.sh`.
+
+Open <http://localhost:82> in your browser (or whatever port you configured) to access the
+dashboard, create payment requests, and monitor their status. The REST API continues to be available
+under `/payment/...`.
 
 ### Run with Docker
 
@@ -26,20 +31,20 @@ monitor their status. The REST API continues to be available under `/payment/...
 git clone https://github.com/MrStahlfelge/ergopay-payment-portal.git
 cd ergopay-payment-portal
 docker build -t ergopay-portal .
-docker run -p 8080:8080 ergopay-portal
+docker run -p 82:82 ergopay-portal
 ```
 
 You can pass custom JVM options when running the container:
 
 ```bash
-docker run -e JAVA_OPTS="-Xms512m -Xmx512m" -p 8080:8080 ergopay-portal
+docker run -e JAVA_OPTS="-Xms512m -Xmx512m" -p 82:82 ergopay-portal
 ```
 
 ### Deploying to a Linux server
 
 1. Install Docker (or Java 11 + Gradle) on your server.
 2. Clone this repository and either run `./scripts/run.sh` or build the Docker image as shown above.
-3. Reverse proxy the exposed port `8080` if you want to serve it under HTTPS.
+3. Reverse proxy the exposed port `82` if you want to serve it under HTTPS using your preferred tooling.
 
 The UI is responsive and can be shared directly with non-technical users. If you already use Spring
 Boot on your server, you can integrate the `PaymentService` class into your own project and directly
@@ -104,7 +109,7 @@ The request will respond with the request ID and an ErgoPay URL:
 
     {
     "requestId": "MSWHPMIDDZ",
-    "ergoPayUrl": "ergopay://localhost:8080/payment/getrequest/MSWHPMIDDZ?sender=#P2PK_ADDRESS#"
+    "ergoPayUrl": "ergopay://localhost:82/payment/getrequest/MSWHPMIDDZ?sender=#P2PK_ADDRESS#"
     }
 
 Use the request ID for calls to the state endpoint (see below). The `ergoPayUrl` is the link you 
