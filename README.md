@@ -4,28 +4,46 @@ This is a ready to use payment portal application to use for websites and applic
 payments on the Ergo blockchain. It supports payments both in Ergo (the blockchain's native token)
 and every other token on Ergo.
 
-## Self-hosting 
+## Quick start
 
-You can deploy this project as it is on a hosting service supporting JVM applications (Heroku, 
-Dokku on DigitalOcean, ...) and use its REST API from your website, application, game backend, ... 
-But keep in mind that this configuration uses an in-memory db and will 
-loose saved information on restart, so you might want
-to adapt the configuration. You might also want to check or change Explorer API and 
-[Node API URL](https://github.com/MrStahlfelge/ergopay-payment-portal/blob/master/src/main/kotlin/org/ergoplatform/ergopay/paymentportal/service/NodeService.kt) 
-constants.
+The portal now ships with a simple web UI and one-command setup scripts so you can deploy it on any
+Linux machine in minutes.
 
-If you already use Spring Boot on your server, you can integrate the Service class into your own 
-project and directly use it without going through a REST API.
+### Run with Gradle (recommended for local development)
 
-Or you use it as an example and built up your own code! Clone it and run it locally (Java 11 needed) 
-by typing in 
+```bash
+git clone https://github.com/MrStahlfelge/ergopay-payment-portal.git
+cd ergopay-payment-portal
+./scripts/run.sh
+```
 
+Open <http://localhost:8080> in your browser to access the dashboard, create payment requests, and
+monitor their status. The REST API continues to be available under `/payment/...`.
 
-For Windows systems:
-```    gradlew bootRun```
-    
-For MacOS & Linux systems:
-```    ./gradlew bootRun```
+### Run with Docker
+
+```bash
+git clone https://github.com/MrStahlfelge/ergopay-payment-portal.git
+cd ergopay-payment-portal
+docker build -t ergopay-portal .
+docker run -p 8080:8080 ergopay-portal
+```
+
+You can pass custom JVM options when running the container:
+
+```bash
+docker run -e JAVA_OPTS="-Xms512m -Xmx512m" -p 8080:8080 ergopay-portal
+```
+
+### Deploying to a Linux server
+
+1. Install Docker (or Java 11 + Gradle) on your server.
+2. Clone this repository and either run `./scripts/run.sh` or build the Docker image as shown above.
+3. Reverse proxy the exposed port `8080` if you want to serve it under HTTPS.
+
+The UI is responsive and can be shared directly with non-technical users. If you already use Spring
+Boot on your server, you can integrate the `PaymentService` class into your own project and directly
+use it without going through a REST API.
 
 ## Use the hosted version
 
