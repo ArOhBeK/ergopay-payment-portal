@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ErgoPay Payment Portal</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+<header>
+    <div class="wrapper">
+        <h1>ErgoPay Payment Portal</h1>
+        <p>Create, share, and monitor ErgoPay payment requests with a friendly interface.</p>
+    </div>
+</header>
+<main class="wrapper">
+    <section class="card" id="create-section">
+        <h2>Create a payment request</h2>
+        <p>
+            Complete the form to generate a new ErgoPay request. The ERG amount is automatically converted to nanoERG.
+            Token amounts must be provided in their raw value.
+        </p>
+        <div class="alert alert-error" id="create-error" hidden></div>
+        <form id="create-form" class="form-grid">
+            <div class="form-field">
+                <label for="ergAmount">ERG amount</label>
+                <input id="ergAmount" name="ergAmount" type="text" placeholder="1.0" required />
+                <small>Decimals allowed. Minimum is the protocol change value.</small>
+            </div>
+            <div class="form-field">
+                <label for="receiverAddress">Receiver address *</label>
+                <input id="receiverAddress" name="receiverAddress" type="text" placeholder="9g8g..." required />
+            </div>
+            <div class="form-field">
+                <label for="senderAddress">Sender address</label>
+                <input id="senderAddress" name="senderAddress" type="text" placeholder="Optional" />
+                <small>Leave empty to let the wallet choose an address.</small>
+            </div>
+            <div class="form-field">
+                <label for="tokenId">Token ID</label>
+                <input id="tokenId" name="tokenId" type="text" placeholder="Optional token ID" />
+            </div>
+            <div class="form-field">
+                <label for="tokenRawAmount">Token raw amount</label>
+                <input id="tokenRawAmount" name="tokenRawAmount" type="text" placeholder="Raw token amount" />
+            </div>
+            <div class="form-field full">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="3" placeholder="Optional message shown to the payer"></textarea>
+            </div>
+            <div class="form-actions full">
+                <button type="submit">Generate payment link</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="card" id="created-request" hidden>
+        <h2>Payment request ready</h2>
+        <p>Your payment request is live. Share the ErgoPay link or use the status tools below.</p>
+        <div class="result-grid">
+            <div>
+                <h3>Request ID</h3>
+                <code id="result-request-id">-</code>
+            </div>
+            <div>
+                <h3>ErgoPay link</h3>
+                <a id="result-ergopay" class="break" target="_blank" rel="noopener">-</a>
+            </div>
+            <div>
+                <h3>Status endpoint</h3>
+                <a id="result-status" class="break" target="_blank" rel="noopener">-</a>
+            </div>
+        </div>
+        <p class="next-step">
+            <button class="button-secondary" id="monitor-button" type="button">Monitor status</button>
+        </p>
+    </section>
+
+    <section class="card" id="status-section">
+        <h2>Check a payment request</h2>
+        <form id="status-form" class="lookup-form">
+            <input type="text" id="status-request-id" placeholder="Enter request ID" required />
+            <button type="submit">Check status</button>
+        </form>
+        <div class="status-output" id="status-output" hidden>
+            <p class="status" id="status-state">-</p>
+            <p id="status-message" class="muted"></p>
+            <p class="muted" id="status-tx" hidden>Transaction ID: <code id="status-tx-id"></code></p>
+        </div>
+        <div class="alert alert-error" id="status-error" hidden></div>
+    </section>
+
+    <section class="card">
+        <h2>REST API</h2>
+        <p>
+            Prefer to integrate programmatically? The original REST API remains unchanged:
+        </p>
+        <ul>
+            <li><code>POST /payment/addrequest</code> – create a request.</li>
+            <li><code>GET /payment/state/&lt;requestId&gt;</code> – poll the status.</li>
+            <li><code>GET /payment/getrequest/&lt;requestId&gt;</code> – retrieve the ErgoPay payload.</li>
+        </ul>
+    </section>
+</main>
+<footer>
+    <div class="wrapper">
+        <p>
+            Built for quick deployments. Use this UI or call the REST API directly.
+        </p>
+    </div>
+</footer>
+<script>
+(() => {
+    const createForm = document.getElementById('create-form');
+    const createError = document.getElementById('create-error');
+    const createdRequest = document.getElementById('created-request');
+    const resultRequestId = document.getElementById('result-request-id');
+    const resultErgoPay = document.getElementById('result-ergopay');
+    const resultStatus = document.getElementById('result-status');
+    const monitorButton = document.getElementById('monitor-button');
+    const statusForm = document.getElementById('status-form');
+    const statusSection = document.getElementById('status-section');
+    const statusOutput = document.getElementById('status-output');
+    const statusError = document.getElementById('status-error');
+    const statusState = document.getElementById('status-state');
+    const statusMessage = document.getElementById('status-message');
+    const statusTx = document.getElementById('status-tx');
+    const statusTxId = document.getElementById('status-tx-id');
+    const statusRequestIdInput = document.getElementById('status-request-id');
+
+    function hide(element) {
+        element.hidden = true;
+        if (element === createError || element === statusError) {
+            element.textContent = '';
+        }
+    }
+
+    function show(element) {
+        element.hidden = false;
+    }
+
+    function parseErgToNano(value) {
+        const trimmed = value.trim();
+        if (!trimmed) throw new Error('ERG amount is required.');
+        const decimal = Number(trimmed);
+        if (!Number.isFinite(decimal)) throw new Error('Invalid ERG amount.');
+        return Math.floor(decimal * 1e9);
+    }
+
+    createForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        hide(createError);
+
+        const formData = new FormData(createForm);
+        const payload = {};
+
+        const getTrimmed = (name) => {
+            const value = formData.get(name);
+            return typeof value === 'string' ? value.trim() : '';
+        };
+
+        try {
+            payload.nanoErg = parseErgToNano(getTrimmed('ergAmount'));
+        } catch (error) {
+            show(createError);
+            createError.textContent = error.message;
+            return;
+        }
+
+        payload.receiverAddress = getTrimmed('receiverAddress');
+        if (!payload.receiverAddress) {
+            show(createError);
+            createError.textContent = 'Receiver address is required.';
+            return;
+        }
+        payload.senderAddress = getTrimmed('senderAddress') || null;
+        payload.tokenId = getTrimmed('tokenId') || null;
+        const tokenRawAmount = getTrimmed('tokenRawAmount');
+        payload.tokenRawAmount = tokenRawAmount ? Number(tokenRawAmount) : null;
+        if (payload.tokenRawAmount !== null && (!Number.isInteger(payload.tokenRawAmount) || payload.tokenRawAmount <= 0)) {
+            show(createError);
+            createError.textContent = 'Token raw amount must be a positive whole number.';
+            return;
+        }
+        payload.message = getTrimmed('message') || null;
+
+        if (payload.tokenId && (payload.tokenRawAmount === null || Number.isNaN(payload.tokenRawAmount))) {
+            show(createError);
+            createError.textContent = 'Provide a valid token raw amount when a token ID is set.';
+            return;
+        }
+
+        try {
+            const response = await fetch('/payment/addrequest', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const message = await response.text();
+                throw new Error(message || 'Unable to create the payment request.');
+            }
+
+            const result = await response.json();
+            const requestId = result.requestId;
+            const ergoPayUrl = result.ergoPayUrl;
+            const statusUrl = `${window.location.origin}/payment/state/${requestId}`;
+
+            resultRequestId.textContent = requestId;
+            resultErgoPay.textContent = ergoPayUrl;
+            resultErgoPay.href = ergoPayUrl;
+            resultStatus.textContent = statusUrl;
+            resultStatus.href = statusUrl;
+
+            show(createdRequest);
+            statusRequestIdInput.value = requestId;
+            await fetchStatus(requestId);
+        } catch (error) {
+            show(createError);
+            createError.textContent = error.message;
+        }
+    });
+
+    async function fetchStatus(requestId) {
+        hide(statusError);
+        hide(statusTx);
+        statusMessage.textContent = '';
+        statusOutput.hidden = true;
+
+        try {
+            const response = await fetch(`/payment/state/${requestId}`);
+            if (!response.ok) {
+                const message = await response.text();
+                throw new Error(message || 'Unable to fetch the request state.');
+            }
+
+            const state = await response.json();
+            statusState.textContent = state.paymentRequestState;
+            if (state.txId) {
+                statusTxId.textContent = state.txId;
+                show(statusTx);
+            }
+            statusMessage.textContent = 'Refresh to update the status or wait for the wallet response.';
+            show(statusOutput);
+        } catch (error) {
+            show(statusError);
+            statusError.textContent = error.message;
+            statusOutput.hidden = true;
+        }
+    }
+
+    statusForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const requestId = statusRequestIdInput.value.trim();
+        if (!requestId) {
+            show(statusError);
+            statusError.textContent = 'Enter a request ID to check the status.';
+            return;
+        }
+        await fetchStatus(requestId);
+    });
+
+    monitorButton.addEventListener('click', () => {
+        const id = resultRequestId.textContent;
+        if (id) {
+            statusRequestIdInput.value = id;
+            fetchStatus(id);
+            window.scrollTo({ top: statusSection.offsetTop - 40, behavior: 'smooth' });
+        }
+    });
+})();
+</script>
+</body>
+</html>

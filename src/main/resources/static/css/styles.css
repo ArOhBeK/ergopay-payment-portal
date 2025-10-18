@@ -1,0 +1,223 @@
+:root {
+    color-scheme: light dark;
+    --color-bg: #f7f9fc;
+    --color-card: #ffffff;
+    --color-text: #1a1f2b;
+    --color-muted: #5b6170;
+    --color-primary: #ff5722;
+    --color-primary-dark: #e64a19;
+    --color-border: #d7dce6;
+    --color-error: #d32f2f;
+    font-family: "Inter", "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: inherit;
+    line-height: 1.6;
+}
+
+header {
+    background: linear-gradient(120deg, var(--color-primary), #ff8a50);
+    color: #fff;
+    padding: 2rem 0;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+header h1 {
+    margin: 0 0 0.5rem;
+    font-size: 2.25rem;
+}
+
+header p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+.wrapper {
+    width: min(960px, 92vw);
+    margin: 0 auto;
+}
+
+main {
+    padding: 2rem 0 3rem;
+    display: grid;
+    gap: 1.5rem;
+}
+
+.card {
+    background: var(--color-card);
+    border-radius: 18px;
+    padding: 1.75rem;
+    box-shadow: 0 16px 32px rgba(24, 39, 75, 0.08);
+    border: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+.card h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.form-grid {
+    display: grid;
+    gap: 1.2rem 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.form-field label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 0.35rem;
+}
+
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    font: inherit;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.form-field textarea {
+    resize: vertical;
+}
+
+.form-field small {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--color-muted);
+    font-size: 0.85rem;
+}
+
+.form-field.full {
+    grid-column: 1 / -1;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+button,
+.button-secondary {
+    border: none;
+    border-radius: 999px;
+    padding: 0.75rem 1.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+button {
+    background: var(--color-primary);
+    color: #fff;
+    transition: background 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+button:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-1px);
+}
+
+.button-secondary {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    padding: 0.65rem 1.5rem;
+}
+
+.alert {
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.alert-error {
+    background: rgba(211, 47, 47, 0.08);
+    border: 1px solid rgba(211, 47, 47, 0.4);
+    color: var(--color-error);
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.result-grid code,
+.result-grid a.break {
+    display: inline-block;
+    word-break: break-all;
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+}
+
+.next-step {
+    margin-top: 1.5rem;
+}
+
+.lookup-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.lookup-form input {
+    flex: 1 1 240px;
+    padding: 0.65rem 0.75rem;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    font: inherit;
+}
+
+.status {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.muted {
+    color: var(--color-muted);
+}
+
+footer {
+    padding: 2rem 0 3rem;
+    color: var(--color-muted);
+    text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-bg: #0f172a;
+        --color-card: rgba(15, 23, 42, 0.65);
+        --color-text: #e2e8f0;
+        --color-muted: #94a3b8;
+        --color-border: rgba(148, 163, 184, 0.4);
+    }
+
+    body {
+        background: radial-gradient(circle at top, rgba(59, 130, 246, 0.2), transparent 55%),
+            radial-gradient(circle at bottom, rgba(239, 68, 68, 0.2), transparent 45%),
+            var(--color-bg);
+    }
+
+    .card {
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    button {
+        box-shadow: 0 10px 20px rgba(255, 87, 34, 0.25);
+    }
+}
