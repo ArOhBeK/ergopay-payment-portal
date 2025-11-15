@@ -5,6 +5,7 @@ import org.ergoplatform.ergopay.paymentportal.model.PaymentRequest
 import org.ergoplatform.ergopay.paymentportal.repository.PaymentRequestRepo
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.security.SecureRandom
 
 @Service
@@ -215,6 +216,7 @@ class PaymentService(
     }
 
     @Scheduled(fixedRate = 1000L * 60 * 10, initialDelay = 1000L * 60)
+    @Transactional
     fun deleteOldRequests() {
         // purge old payment requests from DB to keep it small
         paymentRequestRepo.deleteByKeepUntilMsLessThan(System.currentTimeMillis())

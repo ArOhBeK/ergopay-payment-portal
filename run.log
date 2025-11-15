@@ -1,0 +1,138 @@
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :bootRunMainClassName
+
+> Task :bootRun
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.7.0)
+
+2025-10-25 12:45:11.265  INFO 2115393 --- [           main] o.e.e.p.PaymentportalApplicationKt       : Starting PaymentportalApplicationKt using Java 21.0.8 on ergolaunch with PID 2115393 (/home/arohbe/ergopay-payment-portal/build/classes/kotlin/main started by arohbe in /home/arohbe/ergopay-payment-portal)
+2025-10-25 12:45:11.268  INFO 2115393 --- [           main] o.e.e.p.PaymentportalApplicationKt       : No active profile set, falling back to 1 default profile: "default"
+2025-10-25 12:45:12.217  INFO 2115393 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-10-25 12:45:12.265  INFO 2115393 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 39 ms. Found 1 JPA repository interfaces.
+2025-10-25 12:45:12.843  INFO 2115393 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 82 (http)
+2025-10-25 12:45:12.854  INFO 2115393 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-10-25 12:45:12.854  INFO 2115393 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.63]
+2025-10-25 12:45:12.974  INFO 2115393 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-10-25 12:45:12.974  INFO 2115393 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1650 ms
+2025-10-25 12:45:13.072  INFO 2115393 --- [           main] i.z.t.d.p.embedded.EmbeddedPostgres      : Detected a Linux x86_64 system
+2025-10-25 12:45:13.106  INFO 2115393 --- [           main] .z.t.d.p.e.DefaultPostgresBinaryResolver : Detected distribution: 'Ubuntu'
+2025-10-25 12:45:13.108  INFO 2115393 --- [           main] .z.t.d.p.e.DefaultPostgresBinaryResolver : System specific postgres binaries found: 'postgres-linux-x86_64.txz'
+2025-10-25 12:45:13.180  INFO 2115393 --- [           main] i.z.t.d.p.embedded.EmbeddedPostgres      : Postgres binaries at /tmp/embedded-pg/PG-102e6363fced1e91aa3b6178e0d6f3a9
+2025-10-25 12:45:13.187  INFO 2115393 --- [           main] i.z.t.d.p.embedded.EmbeddedPostgres      : 870e0f03-f80b-49b0-b914-5fa990d9daaf postmaster started as Process[pid=2115451, exitValue="not exited"] on port 42025.  Waiting up to PT10S for server startup to finish.
+2025-10-25 12:45:13.217  INFO 2115393 --- [es:pid(2115451)] i.z.t.d.p.embedded.EmbeddedPostgres      : waiting for server to start....2025-10-25 12:45:13.217 UTC [2115455] LOG:  starting PostgreSQL 14.8 on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0, 64-bit
+2025-10-25 12:45:13.218  INFO 2115393 --- [es:pid(2115451)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2025-10-25 12:45:13.218 UTC [2115455] LOG:  listening on IPv4 address "127.0.0.1", port 42025
+2025-10-25 12:45:13.218  INFO 2115393 --- [es:pid(2115451)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2025-10-25 12:45:13.218 UTC [2115455] LOG:  listening on Unix socket "/tmp/.s.PGSQL.42025"
+2025-10-25 12:45:13.221  INFO 2115393 --- [es:pid(2115451)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2025-10-25 12:45:13.220 UTC [2115456] LOG:  database system was shut down at 2025-10-25 12:44:58 UTC
+2025-10-25 12:45:13.224  INFO 2115393 --- [es:pid(2115451)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2025-10-25 12:45:13.224 UTC [2115455] LOG:  database system is ready to accept connections
+2025-10-25 12:45:13.292  INFO 2115393 --- [es:pid(2115451)] i.z.t.d.p.embedded.EmbeddedPostgres      :  done
+2025-10-25 12:45:13.292  INFO 2115393 --- [es:pid(2115451)] i.z.t.d.p.embedded.EmbeddedPostgres      : server started
+2025-10-25 12:45:13.391  INFO 2115393 --- [           main] i.z.t.d.p.embedded.EmbeddedPostgres      : 870e0f03-f80b-49b0-b914-5fa990d9daaf postmaster startup finished in 00:00:00.208
+2025-10-25 12:45:13.428  INFO 2115393 --- [           main] o.e.e.p.config.EmbeddedPostgresManager   : Embedded PostgreSQL started on port 42025
+2025-10-25 12:45:13.637  INFO 2115393 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-10-25 12:45:13.677  INFO 2115393 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.9.Final
+2025-10-25 12:45:13.819  INFO 2115393 --- [           main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2025-10-25 12:45:13.906  INFO 2115393 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-10-25 12:45:13.921  INFO 2115393 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-10-25 12:45:13.935  INFO 2115393 --- [           main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2025-10-25 12:45:14.260  INFO 2115393 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2025-10-25 12:45:14.266  INFO 2115393 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-10-25 12:45:14.834  WARN 2115393 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-10-25 12:45:14.973  INFO 2115393 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2025-10-25 12:45:15.360  INFO 2115393 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 13 endpoint(s) beneath base path '/actuator'
+2025-10-25 12:45:15.401  INFO 2115393 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 82 (http) with context path ''
+2025-10-25 12:45:15.414  INFO 2115393 --- [           main] o.e.e.p.PaymentportalApplicationKt       : Started PaymentportalApplicationKt in 4.508 seconds (JVM running for 4.842)
+2025-10-25 12:46:15.541 DEBUG 2115393 --- [   scheduling-1] org.hibernate.SQL                        : select paymentreq0_.id as id1_0_, paymentreq0_.keep_until_ms as keep_unt2_0_, paymentreq0_.message as message3_0_, paymentreq0_.nano_erg as nano_erg4_0_, paymentreq0_.receiver_address as receiver5_0_, paymentreq0_.reduced_tx as reduced_6_0_, paymentreq0_.request_id as request_7_0_, paymentreq0_.sender_address as sender_a8_0_, paymentreq0_.state as state9_0_, paymentreq0_.token_id as token_i10_0_, paymentreq0_.token_raw_amount as token_r11_0_, paymentreq0_.tx_id as tx_id12_0_ from payment_request paymentreq0_ where paymentreq0_.keep_until_ms<?
+Hibernate: select paymentreq0_.id as id1_0_, paymentreq0_.keep_until_ms as keep_unt2_0_, paymentreq0_.message as message3_0_, paymentreq0_.nano_erg as nano_erg4_0_, paymentreq0_.receiver_address as receiver5_0_, paymentreq0_.reduced_tx as reduced_6_0_, paymentreq0_.request_id as request_7_0_, paymentreq0_.sender_address as sender_a8_0_, paymentreq0_.state as state9_0_, paymentreq0_.token_id as token_i10_0_, paymentreq0_.token_raw_amount as token_r11_0_, paymentreq0_.tx_id as tx_id12_0_ from payment_request paymentreq0_ where paymentreq0_.keep_until_ms<?
+2025-10-25 12:46:15.563 ERROR 2115393 --- [   scheduling-1] o.s.s.s.TaskUtils$LoggingErrorHandler    : Unexpected error occurred in scheduled task
+
+org.springframework.dao.InvalidDataAccessApiUsageException: No EntityManager with actual transaction available for current thread - cannot reliably process 'remove' call; nested exception is javax.persistence.TransactionRequiredException: No EntityManager with actual transaction available for current thread - cannot reliably process 'remove' call
+	at org.springframework.orm.jpa.EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(EntityManagerFactoryUtils.java:403) ~[spring-orm-5.3.20.jar:5.3.20]
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:235) ~[spring-orm-5.3.20.jar:5.3.20]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:551) ~[spring-orm-5.3.20.jar:5.3.20]
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61) ~[spring-tx-5.3.20.jar:5.3.20]
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:242) ~[spring-tx-5.3.20.jar:5.3.20]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:152) ~[spring-tx-5.3.20.jar:5.3.20]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.3.20.jar:5.3.20]
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:145) ~[spring-data-jpa-2.7.0.jar:2.7.0]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.3.20.jar:5.3.20]
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97) ~[spring-aop-5.3.20.jar:5.3.20]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.3.20.jar:5.3.20]
+	at org.springframework.data.repository.core.support.MethodInvocationValidator.invoke(MethodInvocationValidator.java:98) ~[spring-data-commons-2.7.0.jar:2.7.0]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.3.20.jar:5.3.20]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:215) ~[spring-aop-5.3.20.jar:5.3.20]
+	at jdk.proxy2/jdk.proxy2.$Proxy128.deleteByKeepUntilMsLessThan(Unknown Source) ~[na:na]
+	at org.ergoplatform.ergopay.paymentportal.service.PaymentService.deleteOldRequests(PaymentService.kt:220) ~[main/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:84) ~[spring-context-5.3.20.jar:5.3.20]
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54) ~[spring-context-5.3.20.jar:5.3.20]
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572) ~[na:na]
+	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:358) ~[na:na]
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+Caused by: javax.persistence.TransactionRequiredException: No EntityManager with actual transaction available for current thread - cannot reliably process 'remove' call
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:295) ~[spring-orm-5.3.20.jar:5.3.20]
+	at jdk.proxy2/jdk.proxy2.$Proxy123.remove(Unknown Source) ~[na:na]
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$DeleteExecution.doExecute(JpaQueryExecution.java:277) ~[spring-data-jpa-2.7.0.jar:2.7.0]
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:90) ~[spring-data-jpa-2.7.0.jar:2.7.0]
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:156) ~[spring-data-jpa-2.7.0.jar:2.7.0]
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:144) ~[spring-data-jpa-2.7.0.jar:2.7.0]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:137) ~[spring-data-commons-2.7.0.jar:2.7.0]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:121) ~[spring-data-commons-2.7.0.jar:2.7.0]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:159) ~[spring-data-commons-2.7.0.jar:2.7.0]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:138) ~[spring-data-commons-2.7.0.jar:2.7.0]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.3.20.jar:5.3.20]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:123) ~[spring-tx-5.3.20.jar:5.3.20]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:388) ~[spring-tx-5.3.20.jar:5.3.20]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119) ~[spring-tx-5.3.20.jar:5.3.20]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.3.20.jar:5.3.20]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:137) ~[spring-tx-5.3.20.jar:5.3.20]
+	... 20 common frames omitted
+
+2025-10-25 12:47:33.638  INFO 2115393 --- [p-nio-82-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-10-25 12:47:33.638  INFO 2115393 --- [p-nio-82-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-10-25 12:47:33.640  INFO 2115393 --- [p-nio-82-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-10-25 12:54:45.868  INFO 2115393 --- [tl:pid(2119351)] i.z.t.d.p.embedded.EmbeddedPostgres      : pg_ctl: PID file "/home/arohbe/ergopay-payment-portal/./data/postgres/db/postmaster.pid" does not exist
+2025-10-25 12:54:45.868  INFO 2115393 --- [tl:pid(2119351)] i.z.t.d.p.embedded.EmbeddedPostgres      : Is server running?
+2025-10-25 12:54:45.869 ERROR 2115393 --- [90d9daaf-closer] i.z.t.d.p.embedded.EmbeddedPostgres      : Could not stop postmaster 870e0f03-f80b-49b0-b914-5fa990d9daaf
+
+java.lang.IllegalStateException: Process [/tmp/embedded-pg/PG-102e6363fced1e91aa3b6178e0d6f3a9/bin/pg_ctl, -D, /home/arohbe/ergopay-payment-portal/./data/postgres/db, stop, -m, fast, -t, 5, -w] failed
+	at io.zonky.test.db.postgres.embedded.EmbeddedPostgres.system(EmbeddedPostgres.java:633) ~[embedded-postgres-2.0.4.jar:na]
+	at io.zonky.test.db.postgres.embedded.EmbeddedPostgres.pgCtl(EmbeddedPostgres.java:423) ~[embedded-postgres-2.0.4.jar:na]
+	at io.zonky.test.db.postgres.embedded.EmbeddedPostgres.close(EmbeddedPostgres.java:390) ~[embedded-postgres-2.0.4.jar:na]
+	at io.zonky.test.db.postgres.embedded.EmbeddedPostgres$1.run(EmbeddedPostgres.java:370) ~[embedded-postgres-2.0.4.jar:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2025-10-25 12:54:45.869  INFO 2115393 --- [90d9daaf-closer] i.z.t.d.p.embedded.EmbeddedPostgres      : Did not clean up directory /home/arohbe/ergopay-payment-portal/./data/postgres/db
+2025-10-25 12:54:45.877  INFO 2115393 --- [ionShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-10-25 12:54:45.879  INFO 2115393 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-10-25 12:54:45.881  INFO 2115393 --- [ionShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+
+> Task :bootRun FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':bootRun'.
+> Process 'command '/usr/lib/jvm/java-21-openjdk-amd64/bin/java'' finished with non-zero exit value 143
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 9m 37s
+4 actionable tasks: 2 executed, 2 up-to-date

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ErgoPay Payment Portal</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+<header>
+    <div class="wrapper">
+        <h1>ErgoPay Payment Portal</h1>
+        <p>Create payments, request wallet addresses, and mint NFTs through ErgoPay.</p>
+    </div>
+</header>
+<main class="wrapper">
+    <section class="card" id="create-section">
+        <h2>Create a payment request</h2>
+        <p>Complete the form to generate a new ErgoPay payment link.</p>
+        <div class="alert alert-error" id="create-error" hidden></div>
+        <form id="create-form" class="form-grid">
+            <div class="form-field">
+                <label for="ergAmount">ERG amount</label>
+                <input id="ergAmount" name="ergAmount" type="text" placeholder="1.0" required />
+                <small>Decimals allowed. Minimum is the protocol change value.</small>
+            </div>
+            <div class="form-field">
+                <label for="receiverAddress">Receiver address *</label>
+                <input id="receiverAddress" name="receiverAddress" type="text" placeholder="9g8g..." required />
+            </div>
+            <div class="form-field">
+                <label for="senderAddress">Sender address</label>
+                <input id="senderAddress" name="senderAddress" type="text" placeholder="Optional" />
+                <small>Leave empty to let the wallet choose an address.</small>
+            </div>
+            <div class="form-field">
+                <label for="tokenId">Token ID</label>
+                <input id="tokenId" name="tokenId" type="text" placeholder="Optional token ID" />
+            </div>
+            <div class="form-field">
+                <label for="tokenRawAmount">Token raw amount</label>
+                <input id="tokenRawAmount" name="tokenRawAmount" type="text" placeholder="Raw token amount" />
+            </div>
+            <div class="form-field full">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="3" placeholder="Optional message shown to the payer"></textarea>
+            </div>
+            <div class="form-actions full">
+                <button type="submit">Generate payment link</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="card" id="created-request" hidden>
+        <h2>Payment request ready</h2>
+        <p>Share the ErgoPay link or monitor the request status below.</p>
+        <div class="result-grid">
+            <div>
+                <h3>Request ID</h3>
+                <code id="result-request-id">-</code>
+            </div>
+            <div>
+                <h3>ErgoPay link</h3>
+                <a id="result-ergopay" class="break" target="_blank" rel="noopener">-</a>
+            </div>
+            <div>
+                <h3>Status endpoint</h3>
+                <a id="result-status" class="break" target="_blank" rel="noopener">-</a>
+            </div>
+        </div>
+        <p class="next-step">
+            <button class="button-secondary" id="monitor-button" type="button">Monitor status</button>
+        </p>
+    </section>
+
+    <section class="card" id="status-section">
+        <h2>Check a payment request</h2>
+        <form id="status-form" class="lookup-form">
+            <input type="text" id="status-request-id" placeholder="Enter request ID" required />
+            <button type="submit">Check status</button>
+        </form>
+        <div class="status-output" id="status-output" hidden>
+            <p class="status" id="status-state">-</p>
+            <p id="status-message" class="muted"></p>
+            <p class="muted" id="status-tx" hidden>Transaction ID: <code id="status-tx-id"></code></p>
+        </div>
+        <div class="alert alert-error" id="status-error" hidden></div>
+    </section>
+
+    <section class="card" id="auth-section">
+        <h2>Request a wallet address</h2>
+        <p>Generate an ErgoPay auth link that prompts the wallet to share its current sender address.</p>
+        <div class="alert alert-error" id="auth-error" hidden></div>
+        <form id="auth-form" class="form-grid">
+            <div class="form-field full">
+                <label for="auth-message">Prompt message</label>
+                <textarea id="auth-message" name="message" rows="2" placeholder="Please authorise this request"></textarea>
+            </div>
+            <div class="form-field full">
+                <label for="auth-replyTo">Reply-to URL</label>
+                <input id="auth-replyTo" name="replyTo" type="url" placeholder="https://your-app.example/callback" />
+            </div>
+            <div class="form-actions full">
+                <button type="submit">Generate auth link</button>
+            </div>
+        </form>
+        <div class="result-grid" id="auth-result" hidden>
+            <div>
+                <h3>ErgoPay link</h3>
+                <a id="auth-result-link" class="break" target="_blank" rel="noopener">-</a>
+            </div>
+            <div>
+                <h3>Wallet prompt</h3>
+                <p id="auth-result-message" class="muted">-</p>
+                <p class="muted"><strong>Severity:</strong> <span id="auth-result-severity">-</span></p>
+            </div>
+            <div>
+                <h3>Reply-to</h3>
+                <p class="muted" id="auth-result-reply">Not set</p>
+            </div>
+            <div>
+                <h3>Address placeholder</h3>
+                <p class="muted" id="auth-result-address">#P2PK_ADDRESS#</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="card" id="mint-section">
+        <h2>Mint an NFT (beta)</h2>
+        <p>Prepare an ErgoPay mint transaction with metadata and send it to a wallet for signing.</p>
+        <div class="alert alert-error" id="mint-error" hidden></div>
+        <form id="mint-form" class="form-grid">
+            <div class="form-field">
+                <label for="mint-address">Sender address *</label>
+                <input id="mint-address" name="address" type="text" placeholder="9f3Wh..." required />
+            </div>
+            <div class="form-field">
+                <label for="mint-image">Image URL *</label>
+                <input id="mint-image" name="imageUrl" type="url" placeholder="https://ipfs.io/ipfs/..." required />
+            </div>
+            <div class="form-field full">
+                <label for="mint-name">Name *</label>
+                <input id="mint-name" name="name" type="text" placeholder="Collection #1" required />
+            </div>
+            <div class="form-field full">
+                <label for="mint-description">Description *</label>
+                <textarea id="mint-description" name="description" rows="3" required></textarea>
+            </div>
+            <div class="form-field">
+                <label for="mint-collection">Collection name</label>
+                <input id="mint-collection" name="collectionName" type="text" placeholder="Optional" />
+            </div>
+            <div class="form-field">
+                <label for="mint-attribute-name">Attribute name</label>
+                <input id="mint-attribute-name" name="attributeName" type="text" placeholder="Trait type" />
+            </div>
+            <div class="form-field">
+                <label for="mint-attribute-value">Attribute value</label>
+                <input id="mint-attribute-value" name="attributeValue" type="text" placeholder="Trait value" />
+            </div>
+            <div class="form-actions full">
+                <button type="submit">Prepare mint transaction</button>
+            </div>
+        </form>
+        <div class="result-grid" id="mint-result" hidden>
+            <div>
+                <h3>ErgoPay link</h3>
+                <a id="mint-result-link" class="break" target="_blank" rel="noopener">-</a>
+            </div>
+            <div>
+                <h3>Mint request ID</h3>
+                <code id="mint-result-request">-</code>
+            </div>
+            <div>
+                <h3>Token ID (predicted)</h3>
+                <p id="mint-result-token" class="muted">-</p>
+            </div>
+            <div>
+                <h3>Transaction endpoint</h3>
+                <a id="mint-result-tx" class="break" target="_blank" rel="noopener">-</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>REST API</h2>
+        <p>Prefer to integrate programmatically? You can call the underlying endpoints directly:</p>
+        <ul>
+            <li><code>GET /payment/auth</code> – generate an ErgoPay address request.</li>
+            <li><code>POST /payment/addrequest</code> – create a payment request.</li>
+            <li><code>GET /payment/state/&lt;requestId&gt;</code> – poll the payment status.</li>
+            <li><code>GET /payment/getrequest/&lt;requestId&gt;</code> – retrieve the payment ErgoPay payload.</li>
+            <li><code>POST /api/nft-mint</code> – prepare an NFT mint request.</li>
+            <li><code>GET /tx/&lt;txId&gt;</code> – fetch the mint transaction ErgoPay payload.</li>
+            <li><code>POST /callback/&lt;txId&gt;</code> – optional callback for signed transactions.</li>
+        </ul>
+    </section>
+</main>
+<footer>
+    <div class="wrapper">
+        <p>Built for quick deployments. Use this UI or call the REST API directly.</p>
+    </div>
+</footer>
+<script>
+(() => {
+    const createForm = document.getElementById('create-form');
+    const createError = document.getElementById('create-error');
+    const createdRequest = document.getElementById('created-request');
+    const resultRequestId = document.getElementById('result-request-id');
+    const resultErgoPay = document.getElementById('result-ergopay');
+    const resultStatus = document.getElementById('result-status');
+    const monitorButton = document.getElementById('monitor-button');
+    const statusForm = document.getElementById('status-form');
+    const statusSection = document.getElementById('status-section');
+    const statusOutput = document.getElementById('status-output');
+    const statusError = document.getElementById('status-error');
+    const statusState = document.getElementById('status-state');
+    const statusMessage = document.getElementById('status-message');
+    const statusTx = document.getElementById('status-tx');
+    const statusTxId = document.getElementById('status-tx-id');
+    const statusRequestIdInput = document.getElementById('status-request-id');
+
+    const authForm = document.getElementById('auth-form');
+    const authError = document.getElementById('auth-error');
+    const authResult = document.getElementById('auth-result');
+    const authResultLink = document.getElementById('auth-result-link');
+    const authResultMessage = document.getElementById('auth-result-message');
+    const authResultSeverity = document.getElementById('auth-result-severity');
+    const authResultReply = document.getElementById('auth-result-reply');
+    const authResultAddress = document.getElementById('auth-result-address');
+
+    const mintForm = document.getElementById('mint-form');
+    const mintError = document.getElementById('mint-error');
+    const mintResult = document.getElementById('mint-result');
+    const mintResultLink = document.getElementById('mint-result-link');
+    const mintResultRequest = document.getElementById('mint-result-request');
+    const mintResultToken = document.getElementById('mint-result-token');
+    const mintResultTx = document.getElementById('mint-result-tx');
+
+    const alertElements = new Set([createError, statusError, authError, mintError].filter(Boolean));
+
+    function hide(element) {
+        if (!element) return;
+        element.hidden = true;
+        if (alertElements.has(element)) {
+            element.textContent = '';
+        }
+    }
+
+    function show(element) {
+        if (!element) return;
+        element.hidden = false;
+    }
+
+    function parseErgToNano(value) {
+        const trimmed = value.trim();
+        if (!trimmed) throw new Error('ERG amount is required.');
+        const decimal = Number(trimmed);
+        if (!Number.isFinite(decimal)) throw new Error('Invalid ERG amount.');
+        return Math.floor(decimal * 1e9);
+    }
+
+    function buildErgoPayLink(path) {
+        const origin = window.location.origin.replace(/^https?:\/\//, 'ergopay://');
+        return origin + path;
+    }
+
+    createForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        hide(createError);
+
+        const formData = new FormData(createForm);
+        const payload = {};
+
+        const getTrimmed = (name) => {
+            const value = formData.get(name);
+            return typeof value === 'string' ? value.trim() : '';
+        };
+
+        try {
+            payload.nanoErg = parseErgToNano(getTrimmed('ergAmount'));
+        } catch (error) {
+            show(createError);
+            createError.textContent = error.message;
+            return;
+        }
+
+        payload.receiverAddress = getTrimmed('receiverAddress');
+        if (!payload.receiverAddress) {
+            show(createError);
+            createError.textContent = 'Receiver address is required.';
+            return;
+        }
+        payload.senderAddress = getTrimmed('senderAddress') || null;
+        payload.tokenId = getTrimmed('tokenId') || null;
+        const tokenRawAmount = getTrimmed('tokenRawAmount');
+        payload.tokenRawAmount = tokenRawAmount ? Number(tokenRawAmount) : null;
+        if (payload.tokenRawAmount !== null && (!Number.isInteger(payload.tokenRawAmount) || payload.tokenRawAmount <= 0)) {
+            show(createError);
+            createError.textContent = 'Token raw amount must be a positive whole number.';
+            return;
+        }
+        payload.message = getTrimmed('message') || null;
+
+        if (payload.tokenId && (payload.tokenRawAmount === null || Number.isNaN(payload.tokenRawAmount))) {
+            show(createError);
+            createError.textContent = 'Provide a valid token raw amount when a token ID is set.';
+            return;
+        }
+
+        try {
+            const response = await fetch('/payment/addrequest', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const raw = await response.text();
+                let message = raw;
+                try {
+                    const parsed = JSON.parse(raw);
+                    message = parsed.message || parsed.error || raw;
+                } catch (_) {}
+                throw new Error(message || 'Unable to create the payment request.');
+            }
+
+            const result = await response.json();
+            const requestId = result.requestId;
+            const ergoPayUrl = result.ergoPayUrl;
+            const statusUrl = window.location.origin + '/payment/state/' + requestId;
+
+            resultRequestId.textContent = requestId;
+            resultErgoPay.textContent = ergoPayUrl;
+            resultErgoPay.href = ergoPayUrl;
+            resultStatus.textContent = statusUrl;
+            resultStatus.href = statusUrl;
+
+            show(createdRequest);
+            statusRequestIdInput.value = requestId;
+            await fetchStatus(requestId);
+        } catch (error) {
+            show(createError);
+            createError.textContent = error.message;
+        }
+    });
+
+    async function fetchStatus(requestId) {
+        hide(statusError);
+        hide(statusTx);
+        statusMessage.textContent = '';
+        statusOutput.hidden = true;
+
+        try {
+            const response = await fetch('/payment/state/' + requestId);
+            if (!response.ok) {
+                const message = await response.text();
+                throw new Error(message || 'Unable to fetch the request state.');
+            }
+
+            const state = await response.json();
+            statusState.textContent = state.paymentRequestState;
+            if (state.txId) {
+                statusTxId.textContent = state.txId;
+                show(statusTx);
+            }
+            statusMessage.textContent = 'Refresh to update the status or wait for the wallet response.';
+            show(statusOutput);
+        } catch (error) {
+            show(statusError);
+            statusError.textContent = error.message;
+            statusOutput.hidden = true;
+        }
+    }
+
+    statusForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const requestId = statusRequestIdInput.value.trim();
+        if (!requestId) {
+            show(statusError);
+            statusError.textContent = 'Enter a request ID to check the status.';
+            return;
+        }
+        await fetchStatus(requestId);
+    });
+
+    monitorButton.addEventListener('click', () => {
+        const id = resultRequestId.textContent;
+        if (id) {
+            statusRequestIdInput.value = id;
+            fetchStatus(id);
+            window.scrollTo({ top: statusSection.offsetTop - 40, behavior: 'smooth' });
+        }
+    });
+
+    if (authForm) {
+        authForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            hide(authError);
+            hide(authResult);
+
+            const message = document.getElementById('auth-message').value.trim();
+            const replyTo = document.getElementById('auth-replyTo').value.trim();
+
+            const params = new URLSearchParams();
+            if (message) params.set('message', message);
+            if (replyTo) params.set('replyTo', replyTo);
+            const query = params.toString();
+            const path = '/payment/auth' + (query ? '?' + query : '');
+            const ergoPayLink = buildErgoPayLink(path);
+
+            try {
+                const response = await fetch(path);
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(text || 'Unable to create the auth request.');
+                }
+                const data = await response.json();
+                authResultLink.textContent = ergoPayLink;
+                authResultLink.href = ergoPayLink;
+                authResultMessage.textContent = data.message || 'Wallet will prompt to share its address.';
+                authResultSeverity.textContent = data.messageSeverity || 'INFORMATION';
+                authResultReply.textContent = data.replyTo || 'Not set';
+                authResultAddress.textContent = data.address || '#P2PK_ADDRESS#';
+                show(authResult);
+            } catch (error) {
+                show(authError);
+                authError.textContent = error.message;
+            }
+        });
+    }
+
+    if (mintForm) {
+        mintForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            hide(mintError);
+            hide(mintResult);
+
+            const formData = new FormData(mintForm);
+            const getTrimmed = (name) => {
+                const value = formData.get(name);
+                return typeof value === 'string' ? value.trim() : '';
+            };
+
+            const payload = {
+                address: getTrimmed('address'),
+                imageUrl: getTrimmed('imageUrl'),
+                name: getTrimmed('name'),
+                description: getTrimmed('description'),
+                collectionName: getTrimmed('collectionName') || null,
+                attributes: []
+            };
+
+            if (!payload.address || !payload.imageUrl || !payload.name || !payload.description) {
+                show(mintError);
+                mintError.textContent = 'Address, name, description, and image URL are required.';
+                return;
+            }
+
+            const attrName = getTrimmed('attributeName');
+            const attrValue = getTrimmed('attributeValue');
+            if ((attrName && !attrValue) || (!attrName && attrValue)) {
+                show(mintError);
+                mintError.textContent = 'Provide both an attribute name and value, or leave both empty.';
+                return;
+            }
+            if (attrName && attrValue) {
+                payload.attributes = [{ trait_type: attrName, value: attrValue }];
+            }
+
+            try {
+                const response = await fetch('/api/nft-mint', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const raw = await response.text();
+                    let message = raw;
+                    try {
+                        const parsed = JSON.parse(raw);
+                        message = parsed.message || parsed.error || raw;
+                    } catch (_) {}
+                    throw new Error(message || 'Unable to create the mint request.');
+                }
+
+                const data = await response.json();
+                if (data.success === false) {
+                    throw new Error('Mint request failed.');
+                }
+
+                mintResultLink.textContent = data.ergoPayUrl;
+                mintResultLink.href = data.ergoPayUrl;
+                mintResultRequest.textContent = data.txId;
+                mintResultToken.textContent = data.tokenId || 'Will be assigned once signed.';
+                const txEndpoint = window.location.origin + '/tx/' + data.txId;
+                mintResultTx.textContent = txEndpoint;
+                mintResultTx.href = txEndpoint;
+                show(mintResult);
+            } catch (error) {
+                show(mintError);
+                mintError.textContent = error.message;
+            }
+        });
+    }
+})();
+</script>
+</body>
+</html>

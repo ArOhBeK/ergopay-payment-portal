@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Embedded Database Settings</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2rem; }
+        .container { max-width: 420px; }
+        label { display: block; margin-top: 1rem; }
+        input { width: 100%; padding: 0.5rem; }
+        .alert { margin-top: 1rem; padding: 0.75rem; border-radius: 4px; }
+        .alert-success { background-color: #e6ffed; border: 1px solid #1f9d55; color: #1f9d55; }
+        .alert-error { background-color: #ffe6e6; border: 1px solid #cc1f1a; color: #cc1f1a; }
+        button { margin-top: 1.5rem; padding: 0.5rem 1rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Embedded Postgres</h1>
+    <p>Current database user: <strong th:text="${currentUser}">ergopay</strong></p>
+
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errors}" class="alert alert-error">
+        <ul>
+            <li th:each="error : ${errors}" th:text="${error}"></li>
+        </ul>
+    </div>
+
+    <form method="post" th:object="${form}">
+        <label for="newPassword">New password</label>
+        <input id="newPassword" type="password" th:field="*{newPassword}" required minlength="8"/>
+
+        <label for="confirmPassword">Confirm password</label>
+        <input id="confirmPassword" type="password" th:field="*{confirmPassword}" required minlength="8"/>
+
+        <button type="submit">Update password</button>
+    </form>
+</div>
+</body>
+</html>

@@ -22,7 +22,7 @@ class PaymentRequest(
     val receiverAddress: String, // address to pay to
     val senderAddress: String?, // address to pay from, if known
     val message: String?, // message to attach to the transaction (optional)
-    @Column(length=5000)
+    @Column(columnDefinition = "BYTEA")
     val reducedTx: ByteArray?, // reduced tx, when already generated
     val txId: String?, // tx id of reduced ty, when already generated
     val state: Int, // last known state of this transaction

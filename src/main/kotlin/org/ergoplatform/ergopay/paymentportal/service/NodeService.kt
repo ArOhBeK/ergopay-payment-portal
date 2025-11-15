@@ -15,13 +15,14 @@ import java.util.concurrent.TimeUnit
 class NodeService(
     private val okHttpClient: OkHttpClient
 ) {
-    val nodeApiUrl = "http://213.239.193.208:9053/" // change this to your own node
+    private val nodeApiUrl = System.getenv("ERGO_NODE_API_URL") ?: "http://127.0.0.1:9053/"
+    private val nodeApiKey = System.getenv("ERGO_NODE_API_KEY") ?: ""
 
     fun getErgoClient(): ErgoClient {
         return RestApiErgoClient.createWithHttpClientBuilder(
             nodeApiUrl,
             NetworkType.MAINNET,
-            "",
+            nodeApiKey,
             RestApiErgoClient.defaultMainnetExplorerUrl,
             okHttpClient.newBuilder()
         )
@@ -34,7 +35,7 @@ class NodeService(
 
             apiCall.body()
         } catch (t: Throwable) {
-            return null
+            null
         }
     }
 
